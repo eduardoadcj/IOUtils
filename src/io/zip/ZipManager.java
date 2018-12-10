@@ -22,6 +22,7 @@ public class ZipManager {
      * This method compress any file or directory on Zip format
      * @param inputDirectory directory or file that will be compressed
      * @param outputDirectory directory where the compressed file will be saved
+     * @throws IOException 
      */
     public static void zipFile(String inputDirectory, String outputDirectory) throws IOException{
         
@@ -51,6 +52,7 @@ public class ZipManager {
      * @param inputDirectory directory or file that will be compressed
      * @param outputDirectory directory where the compressed file will be saved
      * @param attributes list of attributes to add on final archive
+     * @throws IOException 
      */
     public static void zipFile(String inputDirectory, String outputDirectory, HashMap<String,String> attributes) throws IOException{
         
@@ -103,6 +105,6 @@ public class ZipManager {
         }
         
     }
-    
+
     
 }
