@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.imageio.IIOException;
@@ -22,7 +23,7 @@ public class ZipManager {
      * @param inputDirectory directory or file that will be compressed
      * @param outputDirectory directory where the compressed file will be saved
      */
-    public void zipFile(String inputDirectory, String outputDirectory) throws IOException{
+    public static void zipFile(String inputDirectory, String outputDirectory) throws IOException{
         
         String internalDir = "";
         File file = new File(inputDirectory);
@@ -45,7 +46,38 @@ public class ZipManager {
         
     }
     
-    private void zip(File file, String outputDirectory, ZipOutputStream zipOutputStream) throws IOException{
+    /**
+     * This method compress any file or directory on Zip format
+     * @param inputDirectory directory or file that will be compressed
+     * @param outputDirectory directory where the compressed file will be saved
+     * @param attributes list of attributes to add on final archive
+     */
+    public static void zipFile(String inputDirectory, String outputDirectory, HashMap<String,String> attributes) throws IOException{
+        
+        String internalDir = "";
+        File file = new File(inputDirectory);
+        if(!file.exists()){
+            throw new IIOException("file not found");
+        }
+        
+        File outputFile = new File(outputDirectory);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile));
+        
+        if(file.isFile()){
+            zip(file, outputDirectory, zipOutputStream);
+        }else{
+            internalDir = file.getName();
+            File[] files = file.listFiles();
+            for(File f : files){
+                zip(f, internalDir, zipOutputStream);
+            }
+        }
+        zipOutputStream.close();
+        AttributeDefiner.defineAtributes(outputFile, attributes);
+        
+    }
+    
+    private static void zip(File file, String outputDirectory, ZipOutputStream zipOutputStream) throws IOException{
         
         byte data[] = new byte[BUFFER_SIZE];
         
