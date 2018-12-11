@@ -75,7 +75,7 @@ public class ZipManager {
             }
         }
         zipOutputStream.close();
-        AttributeDefiner.defineAtributes(outputFile, attributes);
+        AttributeManager.defineAtributes(outputFile, attributes);
         
     }
     
