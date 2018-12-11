@@ -10,7 +10,7 @@ import java.io.OutputStream;
 
 /**
  *
- * @author eduar
+ * @author Eduardo A. Cruz Junior
  */
 public abstract class BasicIOUtils {
     
