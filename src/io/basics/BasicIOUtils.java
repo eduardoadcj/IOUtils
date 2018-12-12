@@ -14,7 +14,15 @@ import java.io.OutputStream;
  */
 public abstract class BasicIOUtils {
     
+    /**
+     * Size of the buffer used on processes
+     */
     public static final int BUFFER_SIZE = 8192;
+    
+    /**
+     * For internal usage
+     */
+    private static int count = 0;
     
      /**
      * This method copy the input file to output file
@@ -43,6 +51,17 @@ public abstract class BasicIOUtils {
         for (int read = -1; (read = from.read(bytes, 0, count)) != -1; to.write(bytes, 0, read))
             ;
         to.flush();
+    }
+    
+    public static int calcTotalFilesDirectory(File file){
+        for(File f : file.listFiles()){
+            if(f.isFile()){
+                count++;
+            }else{
+                calcTotalFilesDirectory(f);
+            }
+        }
+        return count;
     }
     
 }
