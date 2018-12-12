@@ -12,6 +12,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import javax.imageio.IIOException;
+import monitor.utils.ProgressMonitor;
 
 /**
  *
@@ -108,6 +109,112 @@ public class ZipManager extends BasicIOUtils {
         }
 
     }
+    
+        /**
+     * This method compress any file or directory on Zip format
+     *
+     * @param inputDirectory directory or file that will be compressed
+     * @param outputDirectory directory where the compressed file will be saved
+     * @param attributes list of attributes to add on final archive
+     * @param monitor Object of ProcessMonitor for process monitoring
+     * @throws IOException
+     */
+    public static void zipFile(String inputDirectory,
+            String outputDirectory,
+            HashMap<String, String> attributes,
+            ProgressMonitor monitor) throws IOException {
+
+        String internalDir = "";
+        File file = new File(inputDirectory);
+        if (!file.exists()) {
+            throw new IIOException("file not found");
+        }
+
+        File outputFile = new File(outputDirectory);
+        ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile));
+
+        monitor.setInitValue(0);
+        monitor.setMaxValue(calcTotalFilesDirectory(file));
+
+        if (file.isFile()) {
+            zip(file, outputDirectory, zipOutputStream, monitor);
+        } else {
+            internalDir = file.getName();
+            File[] files = file.listFiles();
+            for (File f : files) {
+                zip(f, internalDir, zipOutputStream, monitor);
+            }
+        }
+        zipOutputStream.close();
+        AttributeManager.defineAtributes(outputFile, attributes);
+        
+    }
+
+    /**
+     * This method compress any file or directory on Zip format
+     *
+     * @param inputDirectory directory or file that will be compressed
+     * @param outputDirectory directory where the compressed file will be saved
+     * @param monitor Object of ProcessMonitor for process monitoring
+     * @throws IOException
+     */
+    public static void zipFile(String inputDirectory, String outputDirectory, ProgressMonitor monitor) throws IOException {
+
+        String internalDir = "";
+        File file = new File(inputDirectory);
+        if (!file.exists()) {
+            throw new IIOException("file not found");
+        }
+
+        ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(new File(outputDirectory)));
+
+        monitor.setInitValue(0);
+        monitor.setMaxValue(calcTotalFilesDirectory(file));
+        
+        if (file.isFile()) {
+            zip(file, outputDirectory, zipOutputStream, monitor);
+        } else {
+            internalDir = file.getName();
+            File[] files = file.listFiles();
+            for (File f : files) {
+                zip(f, internalDir, zipOutputStream, monitor);
+            }
+        }
+        zipOutputStream.close();
+
+    }
+
+    private static void zip(File file,
+            String outputDirectory,
+            ZipOutputStream zipOutputStream,
+            ProgressMonitor monitor) throws IOException {
+
+        byte data[] = new byte[BUFFER_SIZE];
+
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                zip(f, outputDirectory + File.separator + file.getName(), zipOutputStream, monitor);
+            }
+        } else {
+
+            FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
+            ZipEntry entry = new ZipEntry(outputDirectory + File.separator + file.getName());
+            zipOutputStream.putNextEntry(entry);
+
+            int count;
+            while ((count = fileInputStream.read(data)) > 0) {
+                zipOutputStream.write(data, 0, count);
+            }
+
+            zipOutputStream.closeEntry();
+            fileInputStream.close();
+            
+            monitor.next();
+
+        }
+
+    }
 
     /**
      * This method unzip a file to an directory
@@ -136,7 +243,7 @@ public class ZipManager extends BasicIOUtils {
         zip.close();
 
     }
-    
+
     /**
      * This method unzip a file to an directory
      *
@@ -147,7 +254,7 @@ public class ZipManager extends BasicIOUtils {
      */
     public static void unzipFile(File inputFile, File outputDirectory, boolean deleteAfterConclude) throws IOException {
         unzipFile(inputFile, outputDirectory);
-        if(deleteAfterConclude){
+        if (deleteAfterConclude) {
             inputFile.deleteOnExit();
         }
     }
