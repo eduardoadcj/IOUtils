@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package monitor;
 
 import monitor.utils.ProgressMonitor;
@@ -20,6 +16,39 @@ import monitor.ui.ProgressInterface;
 public class ProgressMonitorTest {
 
     public static void main(String[] args) {
+        unzipTest();
+    }
+    
+    public static void unzipTest(){
+        
+        long initTime = System.currentTimeMillis();
+        final ProgressMonitor pm = new ProgressMonitor();
+        
+        new Thread(){
+            @Override
+            public void run() {
+                ProgressInterface pi = new ProgressInterface(null, false);
+                pi.setProgressMonitor(pm);
+                pi.setTitle("Descompactando arquivos...");
+                pi.setVisible(true);
+                pi.start();
+            }
+        }.start();
+        
+        try{
+            ZipManager.unzipFile("C:\\Users\\eduar\\Documents\\NetBeansProjects\\IOUtils\\arquivo.zip", 
+                    "C:\\Users\\eduar\\Desktop", pm);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        long endTime = System.currentTimeMillis();
+        
+        System.out.println((double) (endTime-initTime)/1000);
+        
+    }
+    
+    public static void zipTest(){
+        
         final ProgressMonitor pm = new ProgressMonitor();
 
         new Thread() {
@@ -44,5 +73,5 @@ public class ProgressMonitorTest {
         }
 
     }
-
+    
 }
