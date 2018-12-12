@@ -2,18 +2,20 @@ package monitor.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import monitor.utils.ProgressMonitor;
 
 /**
  *
- * @author Eduardo A. Cruz
+ * @author Eduardo A. Cruz Junior
  */
 public class ProgressInterface extends javax.swing.JDialog {
 
     private ProgressMonitor progressMonitor;
     private String title;
+    
+    private int limitDisplayedInfoCharacters = 32;
+
+    private boolean estimating = false;
 
     public ProgressMonitor getProgressMonitor() {
         return progressMonitor;
@@ -30,6 +32,22 @@ public class ProgressInterface extends javax.swing.JDialog {
     public void setTitle(String title) {
         this.title = title;
         labelTitle.setText(title);
+    }
+
+    public int getLimitDisplayedInfoCharacters() {
+        return limitDisplayedInfoCharacters;
+    }
+
+    public void setLimitDisplayedInfoCharacters(int limitDisplayedInfoCharacters) {
+        this.limitDisplayedInfoCharacters = limitDisplayedInfoCharacters;
+    }
+    
+    public boolean isEstimating() {
+        return estimating;
+    }
+
+    public void setEstimating(boolean estimating) {
+        this.estimating = estimating;
     }
 
     public ProgressInterface(java.awt.Frame parent, boolean modal) {
@@ -160,8 +178,29 @@ public class ProgressInterface extends javax.swing.JDialog {
     }
 
     private void update() {
-        progressBar.setValue((int) progressMonitor.getProgress());
-        labelInformationText.setText(progressMonitor.getProgressMessage());
+        if (progressMonitor.isEstimating()) {
+            progressBar.setIndeterminate(true);
+            progressBar.setStringPainted(false);
+            labelInformationText.setText(reduceChareacters(
+                    progressMonitor.getProgressMessage()));
+        } else {
+            progressBar.setIndeterminate(false);
+            progressBar.setStringPainted(true);
+            labelInformationText.setText(reduceChareacters(
+                    progressMonitor.getProgressMessage()));
+            progressBar.setValue((int) progressMonitor.getProgress());
+        }
     }
 
+    private String reduceChareacters(String input){
+        if(input == null){
+            return "";
+        }else if(input.isEmpty()){
+            return "";
+        }else if(input.length() <= limitDisplayedInfoCharacters){
+            return input;
+        }
+        return input.substring(0,limitDisplayedInfoCharacters) + "...";
+    }
+    
 }
