@@ -53,12 +53,16 @@ public abstract class BasicIOUtils {
         to.flush();
     }
     
-    public static int calcTotalFilesDirectory(File file){
+    /**
+     * This method counts all files in a file
+     * @param file input file
+     */
+    public static int calcTotalFiles(File file){
         for(File f : file.listFiles()){
             if(f.isFile()){
                 count++;
             }else{
-                calcTotalFilesDirectory(f);
+                calcTotalFiles(f);
             }
         }
         return count;

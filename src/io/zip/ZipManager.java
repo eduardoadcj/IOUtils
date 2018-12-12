@@ -134,7 +134,7 @@ public class ZipManager extends BasicIOUtils {
         ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile));
 
         monitor.setInitValue(0);
-        monitor.setMaxValue(calcTotalFilesDirectory(file));
+        monitor.setMaxValue(calcTotalFiles(file));
 
         if (file.isFile()) {
             zip(file, outputDirectory, zipOutputStream, monitor);
@@ -169,7 +169,7 @@ public class ZipManager extends BasicIOUtils {
         ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(new File(outputDirectory)));
 
         monitor.setInitValue(0);
-        monitor.setMaxValue(calcTotalFilesDirectory(file));
+        monitor.setMaxValue(calcTotalFiles(file));
         
         if (file.isFile()) {
             zip(file, outputDirectory, zipOutputStream, monitor);
