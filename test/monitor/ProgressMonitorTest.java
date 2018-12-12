@@ -28,6 +28,7 @@ public class ProgressMonitorTest {
                 ProgressInterface pi = new ProgressInterface(null,false);
                 pi.setProgressMonitor(pm);
                 pi.setVisible(true);
+                pi.setTitle("Compactando arquivos...");
                 pi.start();
             }
 

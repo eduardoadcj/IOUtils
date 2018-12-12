@@ -29,6 +29,7 @@ public class ProgressInterface extends javax.swing.JDialog {
 
     public void setTitle(String title) {
         this.title = title;
+        labelTitle.setText(title);
     }
 
     public ProgressInterface(java.awt.Frame parent, boolean modal) {
