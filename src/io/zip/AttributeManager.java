@@ -27,7 +27,6 @@ public class AttributeManager {
     public static File defineAtributes(File file, HashMap<String, String> attrs) throws IOException {
 
         for (Map.Entry<String, String> pair : attrs.entrySet()) {
-            System.out.println(pair.getKey() + " - " + pair.getValue());
             Files.setAttribute(file.toPath(),
                     "user:" + pair.getKey(), pair.getValue().getBytes(utf8));
         }
