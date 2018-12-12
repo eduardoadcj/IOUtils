@@ -11,6 +11,7 @@ public class ProgressMonitor {
     private long initValue;
     private long currentValue;
     private double progress;
+    private boolean estimating = false;
     
     private String progressMessage;
 
@@ -86,6 +87,14 @@ public class ProgressMonitor {
 
     public void setProgressMessage(String progressMessage) {
         this.progressMessage = progressMessage;
+    }
+
+    public boolean isEstimating() {
+        return estimating;
+    }
+
+    public void setEstimating(boolean estimating) {
+        this.estimating = estimating;
     }
     
 }
