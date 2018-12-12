@@ -1,4 +1,3 @@
-
 package io.basics;
 
 import java.io.File;
@@ -13,19 +12,20 @@ import java.io.OutputStream;
  * @author Eduardo A. Cruz Junior
  */
 public abstract class BasicIOUtils {
-    
+
     /**
      * Size of the buffer used on processes
      */
     public static final int BUFFER_SIZE = 8192;
-    
+
     /**
      * For internal usage
      */
     private static int count = 0;
-    
-     /**
+
+    /**
      * This method copy the input file to output file
+     *
      * @param from input file
      * @param to output file
      * @throws IOException
@@ -41,6 +41,7 @@ public abstract class BasicIOUtils {
 
     /**
      * This method copy the content of input stream to output stream
+     *
      * @param from input stream
      * @param to output stream.
      * @throws IOException
@@ -52,20 +53,27 @@ public abstract class BasicIOUtils {
             ;
         to.flush();
     }
-    
+
     /**
      * This method counts all files in a file
+     *
      * @param file input file
      */
-    public static int calcTotalFiles(File file){
-        for(File f : file.listFiles()){
-            if(f.isFile()){
-                count++;
-            }else{
-                calcTotalFiles(f);
+    public static int calcTotalFiles(File file) {
+        
+        if (file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                if (f.isFile()) {
+                    count++;
+                } else {
+                    calcTotalFiles(f);
+                }
             }
+        } else {
+            count = 1;
         }
+
         return count;
     }
-    
+
 }
