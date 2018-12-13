@@ -32,7 +32,6 @@ public class FilePicker extends javax.swing.JDialog {
     private int fileSelectionMode;
     private File currentDirectory;
     private String title;
-    private List<String> acceptedExtentions;
     private String filterByOneFileExtention;
 
     public FilePicker(java.awt.Frame parent, boolean modal) {
@@ -192,14 +191,6 @@ public class FilePicker extends javax.swing.JDialog {
     public void setTitle(String title) {
         this.title = title;
         this.setTitle(title);
-    }
-
-    public List<String> getAcceptedExtentions() {
-        return acceptedExtentions;
-    }
-
-    public void setAcceptedExtentions(List<String> acceptedExtentions) {
-        this.acceptedExtentions = acceptedExtentions;
     }
 
     public String getFilterByOneFileExtention() {
