@@ -69,7 +69,7 @@ public class ProgressInterface extends javax.swing.JDialog {
         progressBar = new javax.swing.JProgressBar();
         labelInformationText = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         labelTitle.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
