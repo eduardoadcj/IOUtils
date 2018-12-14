@@ -1,10 +1,8 @@
 package io.ui;
 
 import java.awt.Dimension;
-import java.util.List;
 import java.awt.Toolkit;
 import java.io.File;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,7 +29,6 @@ public class FilePicker extends javax.swing.JDialog {
 
     private int fileSelectionMode;
     private File currentDirectory;
-    private String title;
     private String filterByOneFileExtention;
 
     public FilePicker(java.awt.Frame parent, boolean modal) {
@@ -182,15 +179,6 @@ public class FilePicker extends javax.swing.JDialog {
     public void setCurrentDirectory(String currentDirectory) {
         this.currentDirectory = new File(currentDirectory);
         fileChooser.setCurrentDirectory(this.currentDirectory);
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-        this.setTitle(title);
     }
 
     public String getFilterByOneFileExtention() {
