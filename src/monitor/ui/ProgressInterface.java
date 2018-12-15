@@ -2,6 +2,8 @@ package monitor.ui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import monitor.utils.ProgressMonitor;
 
 /**
@@ -12,7 +14,7 @@ public class ProgressInterface extends javax.swing.JDialog {
 
     private ProgressMonitor progressMonitor;
     private String title;
-    
+
     private int limitDisplayedInfoCharacters = 32;
 
     private boolean estimating = false;
@@ -41,7 +43,7 @@ public class ProgressInterface extends javax.swing.JDialog {
     public void setLimitDisplayedInfoCharacters(int limitDisplayedInfoCharacters) {
         this.limitDisplayedInfoCharacters = limitDisplayedInfoCharacters;
     }
-    
+
     public boolean isEstimating() {
         return estimating;
     }
@@ -69,7 +71,7 @@ public class ProgressInterface extends javax.swing.JDialog {
         progressBar = new javax.swing.JProgressBar();
         labelInformationText = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
 
         labelTitle.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -162,6 +164,19 @@ public class ProgressInterface extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     public void start() {
+
+        if (this.isModal()) {
+            new Thread() {
+                @Override
+                public void run() {
+                    visible(true);
+                }
+
+            }.start();
+        }else{
+            visible(true);
+        }
+
         while (progressMonitor.getProgress() <= 100.d) {
             update();
             if (progressMonitor.getProgress() == 100.d) {
@@ -175,6 +190,11 @@ public class ProgressInterface extends javax.swing.JDialog {
             }
         }
         this.dispose();
+
+    }
+
+    private void visible(boolean val) {
+        this.setVisible(val);
     }
 
     private void update() {
@@ -192,15 +212,15 @@ public class ProgressInterface extends javax.swing.JDialog {
         }
     }
 
-    private String reduceChareacters(String input){
-        if(input == null){
+    private String reduceChareacters(String input) {
+        if (input == null) {
             return "";
-        }else if(input.isEmpty()){
+        } else if (input.isEmpty()) {
             return "";
-        }else if(input.length() <= limitDisplayedInfoCharacters){
+        } else if (input.length() <= limitDisplayedInfoCharacters) {
             return input;
         }
-        return input.substring(0,limitDisplayedInfoCharacters) + "...";
+        return input.substring(0, limitDisplayedInfoCharacters) + "...";
     }
-    
+
 }
