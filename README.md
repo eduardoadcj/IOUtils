@@ -7,4 +7,4 @@ Atualmente as funcionalidades que compreendem a biblioteca são:
 - Barra de progresso.
 - Compressor Zip.
 - Descompressor Zip.
-- Gerenciamento de atributos de arquivos.
+- Gerenciador de atributos de arquivos.
